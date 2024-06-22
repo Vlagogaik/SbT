@@ -8,5 +8,6 @@ import java.lang.annotation.*;
 public @interface AWatch {
     int hour() default 0;
     String description() default "Oleg";
+
 }
 

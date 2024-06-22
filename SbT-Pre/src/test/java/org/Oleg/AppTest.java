@@ -48,4 +48,32 @@ class AppTest {
         Assert.assertEquals(w.getWatchByOlegM(), "JustOleg");
 
     }
+
+    @Test
+    void DataContainer(){
+        DataContainer data = new DataContainer();
+        data.setID(16);
+        data.setDescription("Oleg");
+        DataContainer data0 = new DataContainer("OlegBig",18);
+        Assert.assertEquals(data.getID(), 16);
+        Assert.assertEquals(data.getDescription(), "Oleg");
+        Assert.assertEquals(data0.getID(), 18);
+        Assert.assertEquals(data0.getDescription(), "OlegBig");
+
+    }
+    @Test
+    void ExtendsForNewAAnnoClass(){
+        ExtendsForNewAnnoClass ex = new ExtendsForNewAnnoClass();
+        ex.setDesc("OlegMain");
+        ex.setID(0);
+        ex.NextId(ex.getID());
+        ex.AddDesc(ex.getDesc());
+        ExtendsForNewAnnoClass ex1 = new ExtendsForNewAnnoClass(16, "Oleg1");
+
+        Assert.assertEquals(ex.getID(), 1);
+        Assert.assertEquals(ex.getDesc(), "OlegMainNewAdd");
+        Assert.assertEquals(ex1.getDesc(), "Oleg1");
+        Assert.assertEquals(ex1.getID(), 16);
+
+    }
 }

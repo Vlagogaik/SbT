@@ -28,4 +28,5 @@ public class Week {
             this.hour = hour;
         }
     }
+
 }
