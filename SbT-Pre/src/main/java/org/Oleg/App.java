@@ -57,8 +57,20 @@ public class App
         DataContainer dataContainer2 = new DataContainer();
 
         e1.PrintDescription(dataContainer2, "null");
-        e1.DescriprionsAndIDToString(dataContainer2, null);
+//        e1.DescriprionsAndIDToString(dataContainer2, null);
         System.out.println("<================>\n");
+
+        // Reflection
+        Week w = new Week();
+        DataContainer dataContainerR = new DataContainer("Oleg", 18);
+        Object clazz = w.CreateClassWithDataContainerAndWeek(16, 5, dataContainerR);
+        if(clazz instanceof DateAndDataContainer){
+            DateAndDataContainer newClazz = (DateAndDataContainer) clazz;
+            System.out.println("Created");
+        }
+
+
+
     }
 
 

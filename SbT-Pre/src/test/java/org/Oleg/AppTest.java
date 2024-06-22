@@ -4,6 +4,10 @@ import junit.framework.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Field;
+
+import static junit.framework.Assert.*;
+
 class AppTest {
     @Test
     void WeeksTest(){
@@ -25,24 +29,24 @@ class AppTest {
         int res2 = 4;
         int res3 = 5;
 
-        Assert.assertEquals(dh0.getDay(),res0);
-        Assert.assertEquals(dh1.getDay(),res1);
-        Assert.assertEquals(dh2.getDay(),res2);
-        Assert.assertEquals(dh3.getDay(),res3);
+        assertEquals(dh0.getDay(),res0);
+        assertEquals(dh1.getDay(),res1);
+        assertEquals(dh2.getDay(),res2);
+        assertEquals(dh3.getDay(),res3);
 
     }
     @Test
     void WatchsTest(){
         Watch w = new Watch();
-        Assert.assertEquals(w.getHour(), 12);
+        assertEquals(w.getHour(), 12);
         w.setHour(10);
-        Assert.assertEquals(w.getHour(), 10);
+        assertEquals(w.getHour(), 10);
         w.nextHour();
         w.setDescription("OperOleg");
-        Assert.assertEquals(w.getHour(), 11);
-        Assert.assertEquals(w.getDescription(), "OperOleg");
-        Assert.assertEquals(w.getWatchByOleg(), "OlegMangal");
-        Assert.assertEquals(w.getWatchByOlegM(), "JustOleg");
+        assertEquals(w.getHour(), 11);
+        assertEquals(w.getDescription(), "OperOleg");
+        assertEquals(w.getWatchByOleg(), "OlegMangal");
+        assertEquals(w.getWatchByOlegM(), "JustOleg");
 
     }
 
@@ -52,10 +56,10 @@ class AppTest {
         data.setID(16);
         data.setDescription("Oleg");
         DataContainer data0 = new DataContainer("OlegBig",18);
-        Assert.assertEquals(data.getID(), 16);
-        Assert.assertEquals(data.getDescription(), "Oleg");
-        Assert.assertEquals(data0.getID(), 18);
-        Assert.assertEquals(data0.getDescription(), "OlegBig");
+        assertEquals(data.getID(), 16);
+        assertEquals(data.getDescription(), "Oleg");
+        assertEquals(data0.getID(), 18);
+        assertEquals(data0.getDescription(), "OlegBig");
 
     }
     @Test
@@ -67,10 +71,10 @@ class AppTest {
         ex.AddDesc(ex.getDesc());
         ExtendsForNewAnnoClass ex1 = new ExtendsForNewAnnoClass(16, "Oleg1");
 
-        Assert.assertEquals(ex.getID(), 1);
-        Assert.assertEquals(ex.getDesc(), "OlegMainNewAdd");
-        Assert.assertEquals(ex1.getDesc(), "Oleg1");
-        Assert.assertEquals(ex1.getID(), 16);
+        assertEquals(ex.getID(), 1);
+        assertEquals(ex.getDesc(), "OlegMainNewAdd");
+        assertEquals(ex1.getDesc(), "Oleg1");
+        assertEquals(ex1.getID(), 16);
 
     }
 
@@ -80,10 +84,43 @@ class AppTest {
         ExtendsForNewAnnoClass.Ex1 e1 = new ExtendsForNewAnnoClass.Ex1();
         DataContainer dataContainer2 = new DataContainer();
         NullPointerException thrown = Assertions.assertThrows(NullPointerException.class, () -> {
-            Assert.assertEquals(e1.DescriprionsAndIDToString(dataContainer2, null), "Description: null" + " ID: null");
+            assertEquals(e1.DescriprionsAndIDToString(dataContainer2, null), "Description: null" + " ID: null");
                 });
-        Assert.assertEquals(e1.DescriprionsAndIDToString(dataContainer2, "null"), "Description: null" + " ID: null");
+        assertEquals(e1.DescriprionsAndIDToString(dataContainer2, "null"), "Description: null" + " ID: null");
+    }
+    @Test
+    void CreateClassTest() throws NoSuchFieldException, IllegalAccessException {
+        Week w = new Week();
+        DataContainer dataContainerR = new DataContainer("Oleg", 18);
+        Object clazz = w.CreateClassWithDataContainerAndWeek(16, 5, dataContainerR);
+        assertNotNull(clazz);
+        assertTrue(clazz instanceof DateAndDataContainer);
+        DateAndDataContainer newClazz = (DateAndDataContainer) clazz;
+        assertEquals("Oleg", newClazz.getDescription());
+        assertEquals(18, newClazz.getID());
 
+        // Тут задача 2
+        assertEquals(6, newClazz.NextMonth());
+        assertEquals(newClazz.NextDay(),17);
+        assertEquals(newClazz.CopyRigthDescription(),"Oleg CreatedByOleg");
+        assertEquals(newClazz.NextID(),19);
+
+        //Тут задача 3
+        Field monthField = DateAndDataContainer.class.getDeclaredField("month");
+        monthField.setAccessible(true);
+        assertEquals(6, monthField.getInt(newClazz));
+
+        Field dayField = DateAndDataContainer.class.getDeclaredField("day");
+        dayField.setAccessible(true);
+        assertEquals(17, dayField.getInt(newClazz));
+
+        Field descriptionField = DateAndDataContainer.class.getDeclaredField("Description");
+        descriptionField.setAccessible(true);
+        assertEquals("Oleg CreatedByOleg", descriptionField.get(newClazz));
+
+        Field IDField = DateAndDataContainer.class.getDeclaredField("ID");
+        IDField.setAccessible(true);
+        assertEquals(19, IDField.getInt(newClazz));
 
     }
 }

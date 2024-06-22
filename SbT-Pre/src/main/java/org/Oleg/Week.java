@@ -1,4 +1,7 @@
 package org.Oleg;
+
+import java.lang.reflect.Constructor;
+
 @DayDefault
 public class Week {
     private int day;
@@ -18,15 +21,42 @@ public class Week {
     }
 
     public static class CustomDay extends Week {
-        private int hour;
+        private int month;
         public CustomDay() {
             super();
-            this.hour = hour;
+            this.month = month;
         }
-        public CustomDay(int day, int hour) {
+        public CustomDay(int day, int month) {
             super(day);
-            this.hour = hour;
+            this.month = month;
         }
     }
+    // Тут метод, получающий на вход дату и данные с типами полей из класса DataContainer и исходя из нее создает нужные экземпляры классов.(Reflections)
+    public Object CreateClassWithDataContainerAndWeek(int day, int month, DataContainer dataContainer){
+        String Desc = dataContainer.getDescription();
+        int ID = dataContainer.getID();
+        try {
+            Class<?> clazz = Class.forName("org.Oleg.DateAndDataContainer");
+            Constructor<?>[] constructors = clazz.getDeclaredConstructors();
 
+            for (Constructor<?> constructor : constructors) {
+                Class<?>[] parameterTypes = constructor.getParameterTypes();
+                if (parameterTypes.length == 4 &&
+                        parameterTypes[0].equals(int.class) &&
+                        parameterTypes[1].equals(int.class) &&
+                        parameterTypes[2].equals(String.class) &&
+                        parameterTypes[3].equals(int.class)
+                )
+                {
+                    return constructor.newInstance(day, month, Desc, ID);
+                }
+            }
+
+
+            throw new IllegalArgumentException("Error: Can`t create Class");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }
