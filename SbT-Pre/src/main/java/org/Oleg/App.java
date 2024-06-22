@@ -39,5 +39,17 @@ public class App
         ExtendsForNewAnnoClass.Ex2 ex1 = outer.new Ex2();
         ex1.displayInfo();
         System.out.println("<================>\n");
+
+        //Проверка @NewRepetableAnno
+        ExtendsForNewAnnoClass outer0 = new ExtendsForNewAnnoClass();
+        ExtendsForNewAnnoClass.Ex0 ex0 = outer0.new Ex0();
+        DataContainer dataContainer = new DataContainer();
+        ex0.PrintDescription(dataContainer);
+        ex0.PrintID(dataContainer);
+
+        DataContainer dataContainer0 = new DataContainer("Oleg", 16);
+        ex0.PrintDescription(dataContainer0);
+        ex0.PrintID(dataContainer0);
+        System.out.println("<================>\n");
     }
 }

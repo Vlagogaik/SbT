@@ -5,8 +5,9 @@ import junit.framework.Assert;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.junit.jupiter.api.Test;
-
-
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 class AppTest {
     @Test
     void Weeks(){
@@ -76,4 +77,5 @@ class AppTest {
         Assert.assertEquals(ex1.getID(), 16);
 
     }
+
 }
