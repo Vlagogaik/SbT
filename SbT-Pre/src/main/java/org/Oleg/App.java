@@ -51,5 +51,15 @@ public class App
         ex0.PrintDescription(dataContainer0);
         ex0.PrintID(dataContainer0);
         System.out.println("<================>\n");
+
+        //Проверка @NotNull
+        ExtendsForNewAnnoClass.Ex1 e1 = new ExtendsForNewAnnoClass.Ex1();
+        DataContainer dataContainer2 = new DataContainer();
+
+        e1.PrintDescription(dataContainer2, "null");
+        e1.DescriprionsAndIDToString(dataContainer2, null);
+        System.out.println("<================>\n");
     }
+
+
 }

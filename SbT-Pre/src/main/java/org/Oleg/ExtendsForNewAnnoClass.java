@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.NonNull;
 
 @NewAnnoClass(ID = 1, Desc = "Oleg1")
 @NoArgsConstructor
@@ -67,9 +68,17 @@ public class ExtendsForNewAnnoClass {
         }
 
     }
-    @NewAnnoClass(ID = 3, Desc = "Oleg3")
-    public class Ex1 extends ExtendsForNewAnnoClass{
+    //Тут использую NotNull
+//    @NewAnnoClass(ID = 3, Desc = "Oleg3")
+    public static class Ex1 extends ExtendsForNewAnnoClass{
 
+        public void PrintDescription(@NonNull DataContainer data, @NonNull String PrimeID){
+                System.out.println("Description: " + data.getDescription() + " \n" + "ID: " + PrimeID);
+
+        }
+        public String DescriprionsAndIDToString(@NonNull DataContainer data, @NonNull String PrimeID){
+            return "Description: " + data.getDescription() + " ID: " + PrimeID;
+        }
 
     }
     @NewAnnoClass(ID = 4, Desc = "Oleg4")

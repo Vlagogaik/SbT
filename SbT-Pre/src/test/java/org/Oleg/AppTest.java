@@ -1,16 +1,12 @@
 package org.Oleg;
 
-//import junit.framework.Test;
 import junit.framework.Assert;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+
 class AppTest {
     @Test
-    void Weeks(){
+    void WeeksTest(){
         Week.CustomDay dh0 = new Week.CustomDay(1, 2);
         Week.CustomDay dh1 = new Week.CustomDay(2, 2);
         Week.CustomDay dh2 = new Week.CustomDay(3, 2);
@@ -36,7 +32,7 @@ class AppTest {
 
     }
     @Test
-    void Watchs(){
+    void WatchsTest(){
         Watch w = new Watch();
         Assert.assertEquals(w.getHour(), 12);
         w.setHour(10);
@@ -51,7 +47,7 @@ class AppTest {
     }
 
     @Test
-    void DataContainer(){
+    void DataContainerTest(){
         DataContainer data = new DataContainer();
         data.setID(16);
         data.setDescription("Oleg");
@@ -63,7 +59,7 @@ class AppTest {
 
     }
     @Test
-    void ExtendsForNewAAnnoClass(){
+    void ExtendsForNewAAnnoClassTest(){
         ExtendsForNewAnnoClass ex = new ExtendsForNewAnnoClass();
         ex.setDesc("OlegMain");
         ex.setID(0);
@@ -78,4 +74,16 @@ class AppTest {
 
     }
 
+    @Test
+    void NotNullTest(){
+
+        ExtendsForNewAnnoClass.Ex1 e1 = new ExtendsForNewAnnoClass.Ex1();
+        DataContainer dataContainer2 = new DataContainer();
+        NullPointerException thrown = Assertions.assertThrows(NullPointerException.class, () -> {
+            Assert.assertEquals(e1.DescriprionsAndIDToString(dataContainer2, null), "Description: null" + " ID: null");
+                });
+        Assert.assertEquals(e1.DescriprionsAndIDToString(dataContainer2, "null"), "Description: null" + " ID: null");
+
+
+    }
 }
