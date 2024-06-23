@@ -1,5 +1,8 @@
 package org.Oleg;
 
+import java.io.IOException;
+import java.nio.file.Path;
+
 public class App
 {
     public static void main( String[] args ) {
@@ -60,14 +63,19 @@ public class App
 //        e1.DescriprionsAndIDToString(dataContainer2, null);
         System.out.println("<================>\n");
 
-        // Reflection
+        // Reflection and NIO(log)
+
+
         Week w = new Week();
         DataContainer dataContainerR = new DataContainer("Oleg", 18);
         Object clazz = w.CreateClassWithDataContainerAndWeek(16, 5, dataContainerR);
         if(clazz instanceof DateAndDataContainer){
             DateAndDataContainer newClazz = (DateAndDataContainer) clazz;
-            System.out.println("Created");
+//            System.out.println("Created");
+            CreateLoggs.writeInLogFile("Descriptions: " + newClazz.getDescription() + " ID: " + newClazz.getID());
         }
+
+        CreateLoggs.cleanOldLogFiles();
 
 
 
