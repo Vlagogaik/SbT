@@ -64,8 +64,6 @@ public class App
         System.out.println("<================>\n");
 
         // Reflection and NIO(log)
-
-
         Week w = new Week();
         DataContainer dataContainerR = new DataContainer("Oleg", 18);
         Object clazz = w.CreateClassWithDataContainerAndWeek(16, 5, dataContainerR);
