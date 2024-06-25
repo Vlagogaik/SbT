@@ -1,4 +1,4 @@
-package org.Oleg;
+package org.oleg;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

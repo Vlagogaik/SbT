@@ -1,4 +1,4 @@
-package org.Oleg;
+package org.oleg;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.*;

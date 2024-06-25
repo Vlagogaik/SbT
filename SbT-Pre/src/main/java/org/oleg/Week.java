@@ -1,4 +1,4 @@
-package org.Oleg;
+package org.oleg;
 
 import java.lang.reflect.Constructor;
 
@@ -36,7 +36,7 @@ public class Week {
         String Desc = dataContainer.getDescription();
         int ID = dataContainer.getID();
         try {
-            Class<?> clazz = Class.forName("org.Oleg.DateAndDataContainer");
+            Class<?> clazz = Class.forName("org.oleg.DateAndDataContainer");
             Constructor<?>[] constructors = clazz.getDeclaredConstructors();
 
             for (Constructor<?> constructor : constructors) {

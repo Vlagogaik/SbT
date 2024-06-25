@@ -1,7 +1,4 @@
-package org.Oleg;
-
-import java.io.IOException;
-import java.nio.file.Path;
+package org.oleg;
 
 public class App
 {

@@ -1,6 +1,5 @@
-package org.Oleg;
+package org.oleg;
 
-import junit.framework.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

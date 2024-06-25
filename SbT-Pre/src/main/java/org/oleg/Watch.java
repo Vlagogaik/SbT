@@ -1,4 +1,4 @@
-package org.Oleg;
+package org.oleg;
 @AWatch(hour = 12, description = "OlegMangal")
 @AWatch(hour = 15, description = "JustOleg")
 public class Watch {
