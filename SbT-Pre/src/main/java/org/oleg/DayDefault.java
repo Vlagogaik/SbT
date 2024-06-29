@@ -7,5 +7,4 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DayDefault {
     int day() default 1;
-
 }

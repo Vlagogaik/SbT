@@ -1,125 +1,134 @@
 package org.oleg;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import java.lang.reflect.Field;
+import java.util.stream.Stream;
 
 import static junit.framework.Assert.*;
 
 class AppTest {
-    @Test
-    void WeeksTest(){
-        Week.CustomDay dh0 = new Week.CustomDay(1, 2);
-        Week.CustomDay dh1 = new Week.CustomDay(2, 2);
-        Week.CustomDay dh2 = new Week.CustomDay(3, 2);
-        Week.CustomDay dh3 = new Week.CustomDay(4, 2);
-
-        dh0.nextDay();
-        dh0.nextDay();
-        dh0.nextDay();
-        dh0.nextDay();
-        dh1.nextDay();
-        dh2.nextDay();
-        dh3.nextDay();
-
-        int res0 = 5;
-        int res1 = 3;
-        int res2 = 4;
-        int res3 = 5;
-
-        assertEquals(dh0.getDay(),res0);
-        assertEquals(dh1.getDay(),res1);
-        assertEquals(dh2.getDay(),res2);
-        assertEquals(dh3.getDay(),res3);
-
+    @ParameterizedTest
+    @MethodSource("provideCustomDayAndExpectedResults")
+    void weeksTest(Week.CustomDay customDay, int expectedResult) {
+        customDay.nextDay();
+        assertEquals(customDay.getDay(), expectedResult);
     }
-    @Test
-    void WatchsTest(){
-        Watch w = new Watch();
-        assertEquals(w.getHour(), 12);
+
+    private static Stream<Object[]> provideCustomDayAndExpectedResults() {
+        return Stream.of(
+                new Object[]{new Week.CustomDay(1, 2), 2},
+                new Object[]{new Week.CustomDay(2, 2), 3},
+                new Object[]{new Week.CustomDay(3, 2), 4},
+                new Object[]{new Week.CustomDay(4, 2), 5}
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideWatchStates")
+    void watchsTest(Watch w, int expectedHour, String description, String watchByOleg, String watchByOlegM) {
+        assertEquals(12, w.getHour());
+
         w.setHour(10);
-        assertEquals(w.getHour(), 10);
+        assertEquals(10, w.getHour());
+
         w.nextHour();
-        w.setDescription("OperOleg");
-        assertEquals(w.getHour(), 11);
-        assertEquals(w.getDescription(), "OperOleg");
-        assertEquals(w.getWatchByOleg(), "OlegMangal");
-        assertEquals(w.getWatchByOlegM(), "JustOleg");
+        w.setDescription(description);
 
+        assertEquals(11, w.getHour());
+        assertEquals(description, w.getDescription());
+        assertEquals(watchByOleg, w.getWatchByOleg());
+        assertEquals(watchByOlegM, w.getWatchByOlegM());
     }
 
-    @Test
-    void DataContainerTest(){
-        DataContainer data = new DataContainer();
-        data.setID(16);
-        data.setDescription("Oleg");
-        DataContainer data0 = new DataContainer("OlegBig",18);
-        assertEquals(data.getID(), 16);
-        assertEquals(data.getDescription(), "Oleg");
-        assertEquals(data0.getID(), 18);
-        assertEquals(data0.getDescription(), "OlegBig");
-
-    }
-    @Test
-    void ExtendsForNewAAnnoClassTest(){
-        ExtendsForNewAnnoClass ex = new ExtendsForNewAnnoClass();
-        ex.setDesc("OlegMain");
-        ex.setID(0);
-        ex.NextId(ex.getID());
-        ex.AddDesc(ex.getDesc());
-        ExtendsForNewAnnoClass ex1 = new ExtendsForNewAnnoClass(16, "Oleg1");
-
-        assertEquals(ex.getID(), 1);
-        assertEquals(ex.getDesc(), "OlegMainNewAdd");
-        assertEquals(ex1.getDesc(), "Oleg1");
-        assertEquals(ex1.getID(), 16);
-
+    private static Stream<Arguments> provideWatchStates() {
+        return Stream.of(
+                Arguments.of(new Watch(), 12, "OperOleg", "OlegMangal", "JustOleg")
+        );
     }
 
-    @Test
-    void NotNullTest(){
+    @ParameterizedTest
+    @MethodSource("provideDataContainers")
+    void dataContainerTest(DataContainer data, int expectedId, String expectedDescription) {
+        assertEquals(expectedId, data.getId());
+        assertEquals(expectedDescription, data.getDescription());
+    }
 
-        ExtendsForNewAnnoClass.Ex1 e1 = new ExtendsForNewAnnoClass.Ex1();
-        DataContainer dataContainer2 = new DataContainer();
+    private static Stream<Arguments> provideDataContainers() {
+        return Stream.of(
+            Arguments.of(new DataContainer("Oleg",16), 16, "Oleg"),
+            Arguments.of(new DataContainer("OlegBig", 18), 18, "OlegBig")
+        );
+    }
+    @ParameterizedTest
+    @MethodSource("provideExtendsForNewAnnotationClasses")
+    void extendsForNewAnnotationClassTest(ExtendsForNewAnnotationClass ex, int expectedId, String expectedDescription) {
+        ex.nextId(ex.getId());
+        ex.addDescription(ex.getDescription());
+
+        assertEquals(expectedId, ex.getId());
+        assertEquals(expectedDescription, ex.getDescription());
+    }
+
+    private static Stream<Arguments> provideExtendsForNewAnnotationClasses() {
+        return Stream.of(
+                Arguments.of(new ExtendsForNewAnnotationClass(0, "OlegMain"), 1, "OlegMainNewAdd"),
+                Arguments.of(new ExtendsForNewAnnotationClass(16, "Oleg1"), 17, "Oleg1NewAdd")
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideNotNullTestCases")
+    void notNullTest(ExtendsForNewAnnotationClass1 ex1, DataContainer dataContainer2, String description, String expectedResult) {
         NullPointerException thrown = Assertions.assertThrows(NullPointerException.class, () -> {
-            assertEquals(e1.DescriprionsAndIDToString(dataContainer2, null), "Description: null" + " ID: null");
-                });
-        assertEquals(e1.DescriprionsAndIDToString(dataContainer2, "null"), "Description: null" + " ID: null");
+            assertEquals(expectedResult, ex1.descriprionsAndIdToString(dataContainer2, null));
+        });
+        assertEquals(expectedResult, ex1.descriprionsAndIdToString(dataContainer2, description));
     }
-    @Test
-    void CreateClassTest() throws NoSuchFieldException, IllegalAccessException {
-        Week w = new Week();
-        DataContainer dataContainerR = new DataContainer("Oleg", 18);
-        Object clazz = w.CreateClassWithDataContainerAndWeek(16, 5, dataContainerR);
+
+    private static Stream<Arguments> provideNotNullTestCases() {
+        return Stream.of(
+            Arguments.of(new ExtendsForNewAnnotationClass1(), new DataContainer(), "null", "Description: null ID: null")
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideCreateClassTestCases")
+    void createClassTest(Week w, DataContainer dataContainer, int month, int day, String description, int id) throws NoSuchFieldException, IllegalAccessException {
+        Object clazz = w.createClassWithDataContainerAndWeek(16, 5, dataContainer);
         assertNotNull(clazz);
         assertTrue(clazz instanceof DateAndDataContainer);
         DateAndDataContainer newClazz = (DateAndDataContainer) clazz;
         assertEquals("Oleg", newClazz.getDescription());
-        assertEquals(18, newClazz.getID());
+        assertEquals(18, newClazz.getId());
 
-        // Тут задача 2
-        assertEquals(6, newClazz.NextMonth());
-        assertEquals(newClazz.NextDay(),17);
-        assertEquals(newClazz.CopyRigthDescription(),"Oleg CreatedByOleg");
-        assertEquals(newClazz.NextID(),19);
+        assertEquals(6, newClazz.nextMonth());
+        assertEquals(17, newClazz.nextDay());
+        assertEquals("Oleg CreatedByOleg", newClazz.copyRigthDescription());
+        assertEquals(19, newClazz.nextId());
 
-        //Тут задача 3
         Field monthField = DateAndDataContainer.class.getDeclaredField("month");
         monthField.setAccessible(true);
-        assertEquals(6, monthField.getInt(newClazz));
+        assertEquals(month, monthField.getInt(newClazz));
 
         Field dayField = DateAndDataContainer.class.getDeclaredField("day");
         dayField.setAccessible(true);
-        assertEquals(17, dayField.getInt(newClazz));
+        assertEquals(day, dayField.getInt(newClazz));
 
-        Field descriptionField = DateAndDataContainer.class.getDeclaredField("Description");
+        Field descriptionField = DateAndDataContainer.class.getDeclaredField("description");
         descriptionField.setAccessible(true);
-        assertEquals("Oleg CreatedByOleg", descriptionField.get(newClazz));
+        assertEquals(description, descriptionField.get(newClazz));
 
-        Field IDField = DateAndDataContainer.class.getDeclaredField("ID");
+        Field IDField = DateAndDataContainer.class.getDeclaredField("id");
         IDField.setAccessible(true);
-        assertEquals(19, IDField.getInt(newClazz));
+        assertEquals(id, IDField.getInt(newClazz));
+    }
 
+    private static Stream<Arguments> provideCreateClassTestCases() {
+        return Stream.of(
+                Arguments.of(new Week(), new DataContainer("Oleg", 18), 6, 17, "Oleg CreatedByOleg", 19)
+        );
     }
 }

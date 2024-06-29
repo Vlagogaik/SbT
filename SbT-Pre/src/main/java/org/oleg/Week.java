@@ -5,16 +5,18 @@ import java.lang.reflect.Constructor;
 @DayDefault
 public class Week {
     private int day;
-
     public Week(int day) {
         this.day = day;
     }
+
     public Week() {
         this.day = day;
     }
+
     public int getDay() {
         return day;
     }
+
     public int nextDay(){
         day += 1;
         return day;
@@ -31,10 +33,11 @@ public class Week {
             this.month = month;
         }
     }
+
     // Тут метод, получающий на вход дату и данные с типами полей из класса DataContainer и исходя из нее создает нужные экземпляры классов.(Reflections)
-    public Object CreateClassWithDataContainerAndWeek(int day, int month, DataContainer dataContainer){
+    public Object createClassWithDataContainerAndWeek(int day, int month, DataContainer dataContainer){
         String Desc = dataContainer.getDescription();
-        int ID = dataContainer.getID();
+        int ID = dataContainer.getId();
         try {
             Class<?> clazz = Class.forName("org.oleg.DateAndDataContainer");
             Constructor<?>[] constructors = clazz.getDeclaredConstructors();
@@ -51,8 +54,6 @@ public class Week {
                     return constructor.newInstance(day, month, Desc, ID);
                 }
             }
-
-
             throw new IllegalArgumentException("Error: Can`t create Class");
         } catch (Exception e) {
             e.printStackTrace();
