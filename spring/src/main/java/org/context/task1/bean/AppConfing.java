@@ -1,16 +1,19 @@
-package org.context.task1;
+package org.context.task1.bean;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 
 @Configuration
 public class AppConfing {
     @Bean
+    @Scope("prototype")
     public Parrot parrot1() {
         return new Parrot("Kesha");
     }
 
     @Bean
+    @Scope("prototype")
     public Parrot parrot2() {
         return new Parrot("Polly");
     }
