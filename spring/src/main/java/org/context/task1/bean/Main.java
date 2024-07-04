@@ -9,6 +9,6 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class Main {
 	public static void main(String[] args) {
 		SpringApplication.run(Main.class, args);
-		ApplicationContext context = new AnnotationConfigApplicationContext("org.context.task1.bean");
+		ApplicationContext context = new AnnotationConfigApplicationContext(AppConfing.class);
 	}
 }

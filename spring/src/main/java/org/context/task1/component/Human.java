@@ -9,10 +9,10 @@ import org.springframework.stereotype.Component;
 @Setter
 @Component
 public class Human {
-    private org.context.task1.component.Parrot parrot1;
-    private org.context.task1.component.Parrot parrot2;
-    private org.context.task1.component.Cat cat;
-    private org.context.task1.component.Dog dog;
+    private Parrot parrot1;
+    private Parrot parrot2;
+    private Cat cat;
+    private Dog dog;
 
     @Autowired
     public Human(Parrot parrot1, Parrot parrot2, Cat cat, Dog dog) {
