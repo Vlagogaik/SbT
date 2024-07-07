@@ -42,7 +42,5 @@ public class AppTest {
     public void testTransferMoney_Success() throws InvalidTransferException {
         Mockito.when(bankClientService.isClient(3)).thenReturn(true);
         application.transferMoney(3, "789423", 10.0);
-
-
     }
 }
