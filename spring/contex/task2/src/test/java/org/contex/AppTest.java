@@ -40,9 +40,9 @@ public class AppTest {
 
     @Test
     public void testTransferMoney_Success() throws InvalidTransferException {
-        InvalidTransferException e = Assertions.assertThrows(InvalidTransferException.class, () ->{
-            application.transferMoney(3, "789423", 10.0);
-        });
-        Assertions.assertEquals("User is not a client of the bank.", e.getMessage());
+        Mockito.when(bankClientService.isClient(3)).thenReturn(true);
+        application.transferMoney(3, "789423", 10.0);
+
+
     }
 }
