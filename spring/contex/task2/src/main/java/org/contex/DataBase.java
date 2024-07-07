@@ -1,4 +1,4 @@
-package org.context.task2;
+package org.contex;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,7 +16,7 @@ public class DataBase {
     private String phoneNumber;
     private double amount;
 
-    public void save(DataBase data){
+    public void save(DataBase data, int id, String phoneNumber, double amount){
         //Выглядит как реализация сохранения данных в базу!
     }
 }
