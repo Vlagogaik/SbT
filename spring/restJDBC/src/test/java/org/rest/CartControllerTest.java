@@ -29,14 +29,17 @@ public class CartControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+
     @Test
     public void testAddProductToCart() throws Exception {
         long cartId = 1L;
         long productId = 1L;
+        int count = 5;
 
-        Mockito.when(cartService.addProductToCart(Mockito.anyLong(), Mockito.anyLong())).thenReturn(cartId);
+        Mockito.when(cartService.addProductToCart(Mockito.anyLong(), Mockito.anyLong(), Mockito.anyInt())).thenReturn(cartId);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/carts/{cartId}/addProduct/{productId}", cartId, productId)
+                        .param("count", String.valueOf(count))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())

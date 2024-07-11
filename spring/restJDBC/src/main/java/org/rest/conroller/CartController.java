@@ -12,8 +12,8 @@ public class CartController {
     private CartService cartService;
 
     @PostMapping("/{cartId}/addProduct/{productId}")
-    public long addProductToCart(@PathVariable Long cartId, @PathVariable Long productId) {
-        return cartService.addProductToCart(cartId, productId);
+    public long addProductToCart(@PathVariable Long cartId, @PathVariable Long productId, @RequestParam int count) {
+        return cartService.addProductToCart(cartId, productId, count);
     }
 
     @DeleteMapping("/{cartId}/removeProduct/{productId}")
@@ -31,3 +31,4 @@ public class CartController {
         cartService.checkout(cartId);
     }
 }
+
