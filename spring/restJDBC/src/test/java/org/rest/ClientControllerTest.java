@@ -34,7 +34,7 @@ public class ClientControllerTest {
         Client client = new Client();
         client.setId(1L);
         client.setName("Oleg");
-        client.setLogin("olegf");
+        client.setUsername("olegf");
         client.setPassword("password123");
         client.setEmail("mail");
 
@@ -49,7 +49,7 @@ public class ClientControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id").value(1L))
                 .andExpect(jsonPath("$.name").value("Oleg"))
-                .andExpect(jsonPath("$.login").value("olegf"))
+                .andExpect(jsonPath("$.username").value("olegf"))
                 .andExpect(jsonPath("$.password").value("password123"))
                 .andExpect(jsonPath("$.email").value("mail"));
 

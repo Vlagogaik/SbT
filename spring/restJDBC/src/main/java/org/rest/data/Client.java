@@ -8,11 +8,10 @@ import lombok.*;
 @NoArgsConstructor
 @Data
 public class Client {
-
     private Long id;
     private String name;
-    private String login;
+    private String username;
     private String password;
     private String email;
-    private long cart;
+    private int cart;
 }

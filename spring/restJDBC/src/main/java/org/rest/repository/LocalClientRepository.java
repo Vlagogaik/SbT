@@ -17,7 +17,7 @@ public class LocalClientRepository implements ClientRepository {
         try (var connection = DriverManager.getConnection(JDBC);
              var prepareStatement = connection.prepareStatement(insertSql, Statement.RETURN_GENERATED_KEYS)) {
             prepareStatement.setString(1, client.getName());
-            prepareStatement.setString(2, client.getLogin());
+            prepareStatement.setString(2, client.getUsername());
             prepareStatement.setString(3, client.getPassword());
             prepareStatement.setString(4, client.getEmail());
             prepareStatement.setLong(5, client.getCart());
@@ -73,7 +73,7 @@ public class LocalClientRepository implements ClientRepository {
         try (var connection = DriverManager.getConnection(JDBC);
              var prepareStatement = connection.prepareStatement(updateSql)) {
             prepareStatement.setString(1, client.getName());
-            prepareStatement.setString(2, client.getLogin());
+            prepareStatement.setString(2, client.getUsername());
             prepareStatement.setString(3, client.getPassword());
             prepareStatement.setString(4, client.getEmail());
             prepareStatement.setLong(5, client.getCart());
@@ -109,7 +109,7 @@ public class LocalClientRepository implements ClientRepository {
         String username = resultSet.getString("username");
         String password = resultSet.getString("password");
         String email = resultSet.getString("email");
-        long cartId = resultSet.getLong("cart_id");
+        int cartId = resultSet.getInt("cart_id");
         return new Client(id, name, username, password, email, cartId);
     }
 }
