@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.ArrayList;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
@@ -19,34 +20,44 @@ class ApplicationTests {
 
 	@Test
 	public void testMethodWithString_Null() {
-		assertThrows(IllegalArgumentException.class, () -> exampleService.methodWithString(null));
+		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> exampleService.methodWithString(null));
+		assertEquals("Method argument is null", exception.getMessage());
 	}
 
 	@Test
 	public void testMethodWithString_Empty() {
-		assertThrows(IllegalArgumentException.class, () -> exampleService.methodWithString(""));
+		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> exampleService.methodWithString(""));
+		assertEquals("Method argument is an empty string", exception.getMessage());
 	}
 
 	@Test
 	public void testMethodWithCollection_Null() {
-		assertThrows(IllegalArgumentException.class, () -> exampleService.methodWithCollection(null));
+		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> exampleService.methodWithCollection(null));
+		assertEquals("Method argument is null", exception.getMessage());
 	}
 
 	@Test
 	public void testMethodWithCollection_Empty() {
-		assertThrows(IllegalArgumentException.class, () -> exampleService.methodWithCollection(new ArrayList<String>()));
+		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> exampleService.methodWithCollection(new ArrayList<>()));
+		assertEquals("Method argument is an empty collection", exception.getMessage());
 	}
 
 	@Test
 	public void testMethodWithMultipleArgs_Null() {
-		assertThrows(IllegalArgumentException.class, () -> exampleService.methodWithMultipleArgs(null, new ArrayList<>()));
-		assertThrows(IllegalArgumentException.class, () -> exampleService.methodWithMultipleArgs("Oleg", null));
+		IllegalArgumentException exception1 = assertThrows(IllegalArgumentException.class, () -> exampleService.methodWithMultipleArgs(null, new ArrayList<>()));
+		assertEquals("Method argument is null", exception1.getMessage());
+
+		IllegalArgumentException exception2 = assertThrows(IllegalArgumentException.class, () -> exampleService.methodWithMultipleArgs("Oleg", null));
+		assertEquals("Method argument is null", exception2.getMessage());
 	}
 
 	@Test
 	public void testMethodWithMultipleArgs_Empty() {
-		assertThrows(IllegalArgumentException.class, () -> exampleService.methodWithMultipleArgs("", new ArrayList<>()));
-		assertThrows(IllegalArgumentException.class, () -> exampleService.methodWithMultipleArgs("Oleg", new ArrayList<>()));
+		IllegalArgumentException exception1 = assertThrows(IllegalArgumentException.class, () -> exampleService.methodWithMultipleArgs("", new ArrayList<>()));
+		assertEquals("Method argument is an empty string", exception1.getMessage());
+
+		IllegalArgumentException exception2 = assertThrows(IllegalArgumentException.class, () -> exampleService.methodWithMultipleArgs("Oleg", new ArrayList<>()));
+		assertEquals("Method argument is an empty collection", exception2.getMessage());
 	}
 
 }
