@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 @Repository
 public class LocalProductRepository implements ProductRepository {
-    public static final String JDBC = "jdbc:mysql://localhost:3306/mysql?useSSL=false&serverTimezone=Europe/Moscow&user=root&password=admin";
+    public static final String JDBC = "jdbc:h2:mem:testdb";
 
     @Override
     public Product save(Product product) {

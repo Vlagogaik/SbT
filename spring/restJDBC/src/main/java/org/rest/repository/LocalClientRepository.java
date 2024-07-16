@@ -8,7 +8,8 @@ import java.sql.*;
 @Repository
 public class LocalClientRepository implements ClientRepository {
 
-    public static final String JDBC = "jdbc:mysql://localhost:3306/mysql?useSSL=false&serverTimezone=Europe/Moscow&user=root&password=admin";
+    public static final String JDBC = "jdbc:h2:mem:testdb";
+
 
     @Override
     public Client save(Client client) {

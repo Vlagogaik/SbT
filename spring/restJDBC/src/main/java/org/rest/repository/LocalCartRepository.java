@@ -7,7 +7,7 @@ import java.sql.*;
 
 @Repository
 public class LocalCartRepository implements CartRepository {
-    public static final String JDBC = "jdbc:mysql://localhost:3306/mysql?useSSL=false&serverTimezone=Europe/Moscow&user=root&password=admin";
+    public static final String JDBC = "jdbc:h2:mem:testdb";
 
     @Override
     public long save(Cart cart) {

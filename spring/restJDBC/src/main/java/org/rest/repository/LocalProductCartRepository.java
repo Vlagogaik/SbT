@@ -9,7 +9,8 @@ import java.util.Optional;
 
 @Repository
 public class LocalProductCartRepository implements ProductCartRepository {
-    public static final String JDBC = "jdbc:postgresql://localhost:5432/postgres?useSSL=false&serverTimezone=Europe/Moscow&user=root&password=admin";
+    public static final String JDBC = "jdbc:h2:mem:testdb";
+
 
     @Override
     public ProductCart save(ProductCart productCart) {

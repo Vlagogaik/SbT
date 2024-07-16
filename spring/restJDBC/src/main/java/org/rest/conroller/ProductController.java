@@ -15,7 +15,7 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping
-    public List<Product> getAllProducts(String name) {
+    public List<Product> getAllProducts(@RequestParam(required = false) String name) {
         return productService.getAllProducts(name);
     }
 
