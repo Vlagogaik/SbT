@@ -40,16 +40,6 @@ public class TransferServiceTest {
     private Cart testCart;
     private List<Product> testProducts;
 
-    @BeforeEach
-    void setUp() {
-        testClient = new Client(1L, "Oleg", "olrg", "password", "oleg@mail", 1L);
-        testCart = new Cart(1L, new ArrayList<>(), "promo123");
-        testProducts = List.of(
-                new Product(1L, "Product A", BigDecimal.valueOf(10.0), 2),
-                new Product(2L, "Product B", BigDecimal.valueOf(15.0), 3)
-        );
-        testCart.setProducts(testProducts);
-    }
 
     @Test
     void testProcessPurchase_Successful() {
