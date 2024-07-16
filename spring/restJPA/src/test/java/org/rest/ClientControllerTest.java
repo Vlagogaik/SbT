@@ -81,5 +81,4 @@ public class ClientControllerTest {
                 .andExpect(status().isOk());
     }
 
-
 }

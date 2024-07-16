@@ -9,12 +9,9 @@ import java.util.Optional;
 
 @Service
 public class ProductService {
-    private final ProductRepository productRepository;
 
     @Autowired
-    public ProductService(ProductRepository productRepository) {
-        this.productRepository = productRepository;
-    }
+    private ProductRepository productRepository;
 
     public List<Product> getAllProducts(String name) {
         return productRepository.findByName(name);
@@ -32,7 +29,7 @@ public class ProductService {
         Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
         product.setName(productDetails.getName());
         product.setPrice(productDetails.getPrice());
-        product.setQuantity(productDetails.getQuantity());
+        product.setCount(productDetails.getCount());
         return productRepository.save(product);
     }
 
@@ -40,5 +37,6 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 }
+
 
 

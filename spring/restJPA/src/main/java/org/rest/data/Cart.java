@@ -19,7 +19,4 @@ public class Cart {
 
     private String promoCode;
 
-//    @OneToMany(mappedBy = "cart")
-    @ElementCollection
-    private List<Product> products;
 }

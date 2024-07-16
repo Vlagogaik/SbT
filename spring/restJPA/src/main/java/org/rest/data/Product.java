@@ -24,5 +24,5 @@ public class Product {
     private BigDecimal price;
 
     @Column(nullable = false)
-    private int quantity;
+    private int count;
 }
