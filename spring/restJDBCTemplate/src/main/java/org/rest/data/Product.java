@@ -9,9 +9,8 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Data
 public class Product {
-
     private Long id;
     private String name;
     private BigDecimal price;
-    private int quantity;
+    private int count;
 }

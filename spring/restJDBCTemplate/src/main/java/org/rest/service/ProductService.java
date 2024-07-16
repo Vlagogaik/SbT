@@ -29,7 +29,7 @@ public class ProductService {
         Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
         product.setName(productDetails.getName());
         product.setPrice(productDetails.getPrice());
-        product.setQuantity(productDetails.getQuantity());
+        product.setCount(productDetails.getCount());
         return productRepository.save(product);
     }
 

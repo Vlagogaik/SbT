@@ -64,8 +64,8 @@ public class TransferServiceTest {
 
         assertDoesNotThrow(() -> transferService.processPurchase(request));
 
-        assertEquals(0, testProducts.get(0).getQuantity());
-        assertEquals(0, testProducts.get(1).getQuantity());
+        assertEquals(0, testProducts.get(0).getCount());
+        assertEquals(0, testProducts.get(1).getCount());
         verify(productRepository, times(2)).update(any(Product.class));
         verify(cartRepository, times(1)).deleteById(testCart.getId());
     }

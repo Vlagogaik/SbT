@@ -18,8 +18,8 @@ public class LocalProductRepository implements ProductRepository {
 
     @Override
     public Product save(Product product) {
-        String insertSql = "INSERT INTO products (name, price, quantity) VALUES (?, ?, ?)";
-        jdbcTemplate.update(insertSql, product.getName(), product.getPrice(), product.getQuantity());
+        String insertSql = "INSERT INTO products (name, price, count) VALUES (?, ?, ?)";
+        jdbcTemplate.update(insertSql, product.getName(), product.getPrice(), product.getCount());
         return product;
     }
 
@@ -50,7 +50,7 @@ public class LocalProductRepository implements ProductRepository {
     @Override
     public boolean update(Product product) {
         String updateSql = "UPDATE products SET name = ?, price = ?, quantity = ? WHERE id = ?";
-        int rowsAffected = jdbcTemplate.update(updateSql, product.getName(), product.getPrice(), product.getQuantity(), product.getId());
+        int rowsAffected = jdbcTemplate.update(updateSql, product.getName(), product.getPrice(), product.getCount(), product.getId());
         return rowsAffected > 0;
     }
 }

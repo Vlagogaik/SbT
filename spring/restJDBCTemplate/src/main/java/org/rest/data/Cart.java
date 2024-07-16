@@ -9,8 +9,7 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 public class Cart {
-
     private Long id;
-    private List<Product> products;
+//    private List<Product> products;
     private String promoCode;
 }

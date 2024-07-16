@@ -45,7 +45,7 @@ public class ProductControllerTest {
         product.setId(1L);
         product.setName("Laptop");
         product.setPrice(BigDecimal.valueOf(1000.0));
-        product.setQuantity(5);
+        product.setCount(5);
 
         Mockito.when(productService.createProduct(any(Product.class))).thenReturn(product);
 
