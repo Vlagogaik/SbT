@@ -9,11 +9,12 @@ public interface UserService {
 
     User findByEmail(String email);
 
+    User findByUserName(String username);
+
     Optional<User> findById(Long userId);
 
     User login(String username, String password);
 
     List<User> findAllUsers();
 
-//    User findByUsername(String username);
 }

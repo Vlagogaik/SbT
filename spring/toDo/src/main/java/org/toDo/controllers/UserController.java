@@ -33,7 +33,7 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<User> loginUser(@RequestBody UserRegistrationRequest userRequest) {
-        User authenticatedUser = userService.login(userRequest.getEmail(), userRequest.getPassword());
+        User authenticatedUser = userService.login(userRequest.getUsername(), userRequest.getPassword());
         return ResponseEntity.ok(authenticatedUser);
     }
 

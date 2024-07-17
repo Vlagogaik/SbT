@@ -12,6 +12,6 @@ CREATE TABLE tasks (
     description TEXT,
     due_date DATE,
     status VARCHAR(50) NOT NULL,
-    user_id BIGINT,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    username VARCHAR(255) NOT NULL
+--    user_id BIGINT
 );

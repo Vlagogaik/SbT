@@ -26,42 +26,72 @@ public class TaskServiceImpl implements TaskService {
     private UserService userService;
 
     @Override
-    public Task create(String title, String description, LocalDate dueDate, Long userId) {
-        Optional<User> user = userService.findById(userId);
+    public Task create(String title, String description, LocalDate dueDate, String username) {
+        User user = userService.findByUserName(username);
 
         Task task = new Task();
         task.setTitle(title);
         task.setDescription(description);
         task.setDueDate(dueDate);
         task.setStatus(TaskStatus.OPEN);
-        task.setUser(user.get());
-        logger.info("Created task with id: {}", task.getId());
+        task.setUser(user);
         return taskRepository.save(task);
     }
     @Override
-    public List<Task> findTasksByUser(User user) {
+    public List<Task> findTasksByUserName(String username) {
+        User user = userService.findByUserName(username);
         return taskRepository.findByUser(user);
     }
 
+
     @Override
-    public List<Task> getAllTasksByUserId(Long userId) {
-        return taskRepository.findByUserId(userId);
+    public List<Task> findTasksByUserNameAndStatus(String username, TaskStatus status) {
+        User user = userService.findByUserName(username);
+        if (user == null) {
+            throw new RuntimeException("User not found");
+        }
+        return taskRepository.findByUserIdAndStatus(user.getId(), status);
     }
 
     @Override
-    public List<Task> getTasksByUserIdAndStatus(Long userId, TaskStatus status) {
-        return taskRepository.findByUserIdAndStatus(userId, status);
+    public List<Task> findTasksByUserNameAndDueDate(String username, LocalDate dueDate) {
+        User user = userService.findByUserName(username);
+        if (user == null) {
+            throw new RuntimeException("User not found");
+        }
+        return taskRepository.findByUserAndDueDate(user, dueDate);
+    }
+
+//    @Override
+//    public Task categorizeTask(Long taskId, String category) {
+//        Optional<Task> taskOptional = taskRepository.findById(taskId);
+//        Task task = taskOptional.orElseThrow(() -> new RuntimeException("Task not found"));
+//        task.setCategory(category);
+//        return taskRepository.save(task);
+//    }
+
+    @Override
+    public List<Task> findTasksByUserNameAndKeyword(String username, String keyword) {
+        User user = userService.findByUserName(username);
+        if (user == null) {
+            throw new RuntimeException("User not found");
+        }
+        return taskRepository.findByUserAndTitleContainingOrDescriptionContaining(user, keyword, keyword);
     }
 
     @Override
     public Task update(Long id, TaskRequest taskRequest) {
-        Optional<Task> task0 = taskRepository.findById(id);
-        Task task = task0.get();
-        task.setTitle(task.getTitle());
-        task.setDescription(task.getDescription());
-        task.setDueDate(task.getDueDate());
-        task.setStatus(task.getStatus());
-        return taskRepository.save(task);
+        Optional<Task> taskOptional = taskRepository.findById(id);
+        if (taskOptional.isPresent()) {
+            Task task = taskOptional.get();
+            task.setTitle(taskRequest.getTitle());
+            task.setDescription(taskRequest.getDescription());
+            task.setDueDate(taskRequest.getDueDate());
+            task.setStatus(taskRequest.getSTATUS());
+            return taskRepository.save(task);
+        } else {
+            throw new RuntimeException("Task not found");
+        }
     }
 
     @Override

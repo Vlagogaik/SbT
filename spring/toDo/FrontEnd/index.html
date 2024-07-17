@@ -4,27 +4,137 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ToDo</title>
-</head>
-<body>
-    <h2>Login</h2>
-    <form action="http://localhost:8080/login" method="post">
-        <label for="username">User Name:</label><br>
-        <input type="text" id="username-login" name="username" required><br>
-        <label for="password">Password:</label><br>
-        <input type="password" id="password-login" name="password" required><br><br>
-        <button type="submit">Login</button>
-    </form>
-    <h2>Registration</h2>
-    <form id="registrationForm">
-        <label for="username">User Name:</label><br>
-        <input type="text" id="username-register" name="username" required><br>
-        <label for="email">Email:</label><br>
-        <input type="email" id="email-register" name="email" required><br>
-        <label for="password">Password:</label><br>
-        <input type="password" id="password-register" name="password" required><br><br>
-        <button type="button" onclick="registerUser()">Register</button>
-    </form>
+    <style>
+        .hidden {
+            display: none;
+        }
+        .visible {
+            display: block;
+        }
+    </style>
     <script>
+        function createTask() {
+            const title = document.getElementById('task-title').value;
+            const description = document.getElementById('task-description').value;
+            const dueDate = document.getElementById('task-dueDate').value;
+            const username = document.getElementById('task-username').value;
+
+            const task = {
+                title: title,
+                description: description,
+                dueDate: dueDate,
+                username: username
+            };
+
+            fetch('http://localhost:8080/api/tasks/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(task)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Task created:', data);
+                getAllTasks(); // Обновляем список задач после создания новой задачи
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+
+        function getAllTasks() {
+            const username = document.getElementById('view-username').value;
+
+            fetch(`http://localhost:8080/api/tasks/all?username=${username}`)
+                .then(response => response.json())
+                .then(data => {
+                    const taskList = document.getElementById('task-list');
+                    taskList.innerHTML = '';
+                    data.forEach(task => {
+                        const taskItem = document.createElement('li');
+                        taskItem.textContent = `ID: ${task.id}, Title: ${task.title}, Description: ${task.description}, Due Date: ${task.dueDate}, Status: ${task.status}`;
+                        taskList.appendChild(taskItem);
+                    });
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        }
+
+        function updateTask(taskId) {
+            const title = document.getElementById('update-task-title').value;
+            const description = document.getElementById('update-task-description').value;
+            const dueDate = document.getElementById('update-task-dueDate').value;
+            const status = document.getElementById('update-task-status').value;
+
+            const task = {
+                title: title,
+                description: description,
+                dueDate: dueDate,
+                status: status
+            };
+
+            fetch(`http://localhost:8080/api/tasks/update/${taskId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(task)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Task updated:', data);
+                getAllTasks(); // Обновляем список задач после обновления
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+
+        function deleteTask(taskId) {
+            fetch(`http://localhost:8080/api/tasks/delete/${taskId}`, {
+                method: 'DELETE'
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log(`Task with ID ${taskId} deleted successfully.`);
+                    getAllTasks(); // Обновляем список задач после удаления
+                } else {
+                    console.error('Delete request failed.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+        function searchTasks() {
+            const username = document.getElementById('search-username').value;
+            const keyword = document.getElementById('search-keyword').value;
+
+            let url = `http://localhost:8080/api/tasks/search?username=${username}`;
+            if (keyword) {
+                url += `&keyword=${keyword}`;
+            }
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    const taskList = document.getElementById('searched-task-list');
+                    taskList.innerHTML = '';
+
+                    data.forEach(task => {
+                        const taskItem = document.createElement('li');
+                        taskItem.textContent = `ID: ${task.id}, Title: ${task.title}, Description: ${task.description}, Due Date: ${task.dueDate}, Status: ${task.status}`;
+                        taskList.appendChild(taskItem);
+                    });
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        }
+
         function registerUser() {
             var formData = {
                 username: document.getElementById("username-register").value,
@@ -41,14 +151,130 @@
             })
             .then(response => {
                 if (response.ok) {
-                    alert('Registration ok');
-                }else{
-                    alert('Registration error');
+                    alert('Registration successful.');
+                    showTaskElements(); // Показываем элементы задач после успешной регистрации
+                } else {
+                    alert('Registration failed.');
                 }
             })
             .catch(error => console.error('Error:', error));
         }
+
+        function login() {
+            var formData = {
+                username: document.getElementById("username-login").value,
+                password: document.getElementById("password-login").value
+            };
+
+            fetch('http://localhost:8080/api/users/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Login successful.');
+                    showTaskElements(); // Показываем элементы задач после успешного логина
+                } else {
+                    alert('Login failed.');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function showTaskElements() {
+            document.getElementById('task-section').classList.remove('hidden');
+            document.getElementById('task-section').classList.add('visible');
+        }
+
+        function logout() {
+            // Дополнительно можно добавить обработку выхода из аккаунта
+            // Например, скрывать элементы задач
+            document.getElementById('task-section').classList.remove('visible');
+            document.getElementById('task-section').classList.add('hidden');
+        }
     </script>
+</head>
+<body>
+    <!-- Login form -->
+    <h2>Login</h2>
+    <form>
+        <label for="username-login">User Name:</label><br>
+        <input type="text" id="username-login" name="username" required><br>
+        <label for="password-login">Password:</label><br>
+        <input type="password" id="password-login" name="password" required><br><br>
+        <button type="button" onclick="login()">Login</button>
+    </form>
+
+    <!-- Registration form -->
+    <h2>Registration</h2>
+    <form id="registrationForm">
+        <label for="username-register">User Name:</label><br>
+        <input type="text" id="username-register" name="username" required><br>
+        <label for="email-register">Email:</label><br>
+        <input type="email" id="email-register" name="email" required><br>
+        <label for="password-register">Password:</label><br>
+        <input type="password" id="password-register" name="password" required><br><br>
+        <button type="button" onclick="registerUser()">Register</button>
+    </form>
+
+    <!-- Task section (initially hidden) -->
+    <div id="task-section" class="hidden">
+        <h2>Create Task</h2>
+        <form>
+            <label for="task-title">Title:</label><br>
+            <input type="text" id="task-title" name="title" required><br>
+            <label for="task-description">Description:</label><br>
+            <input type="text" id="task-description" name="description"><br>
+            <label for="task-dueDate">Due Date:</label><br>
+            <input type="date" id="task-dueDate" name="dueDate"><br>
+            <label for="task-username">Username:</label><br>
+            <input type="text" id="task-username" name="username" required><br>
+            <button type="button" onclick="createTask()">Create Task</button>
+        </form>
+
+        <h2>Search Tasks</h2>
+        <label for="search-username">Username:</label><br>
+        <input type="text" id="search-username" name="username" required><br>
+        <label for="search-keyword">Keyword:</label><br>
+        <input type="text" id="search-keyword" name="keyword"><br>
+        <button type="button" onclick="searchTasks()">Search Tasks</button>
+        <ul id="searched-task-list"></ul>
+
+        <h2>View Tasks</h2>
+        <label for="view-username">Username:</label><br>
+        <input type="text" id="view-username" name="username" required><br>
+        <button type="button" onclick="getAllTasks()">View Tasks</button>
+        <ul id="task-list"></ul>
+
+        <h2>Update Task</h2>
+        <form>
+            <label for="update-task-id">Task ID:</label><br>
+            <input type="number" id="update-task-id" name="id" required><br>
+            <label for="update-task-title">Title:</label><br>
+            <input type="text" id="update-task-title" name="title" required><br>
+            <label for="update-task-description">Description:</label><br>
+            <input type="text" id="update-task-description" name="description"><br>
+            <label for="update-task-dueDate">Due Date:</label><br>
+            <input type="date" id="update-task-dueDate" name="dueDate"><br>
+            <label for="update-task-status">Status:</label><br>
+            <select id="update-task-status" name="status">
+                <option value="OPEN">Open</option>
+                <option value="IN_PROGRESS">In Progress</option>
+                <option value="COMPLETED">Completed</option>
+                <option value="ARCHIVED">Archived</option>
+            </select><br>
+            <button type="button" onclick="updateTask(document.getElementById('update-task-id').value)">Update Task</button>
+        </form>
+
+        <h2>Delete Task</h2>
+        <form>
+            <label for="delete-task-id">Task ID:</label><br>
+            <input type="number" id="delete-task-id" name="id" required><br>
+            <button type="button" onclick="deleteTask(document.getElementById('delete-task-id').value)">Delete Task</button>
+        </form>
+    </div>
 </body>
 </html>
-

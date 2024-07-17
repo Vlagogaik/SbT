@@ -42,29 +42,29 @@ public class SecurityConfing{
 //        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
 //    }
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/users/register", "/api/users/login", "/api/users/allUsers").permitAll()
-                        .anyRequest().authenticated()
-                        )
-                .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
-//                .formLogin(from -> from
-//                        .loginPage("/api/users/login")
-//                        .permitAll()
-//                )
-                .build();
-    }
-
 //    @Bean
 //    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 //        return http.csrf(AbstractHttpConfigurer::disable)
-//                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/users/register").permitAll()
-//                        .anyRequest().permitAll()
-//                )
+//                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/users/register", "/api/users/login", "/api/users/allUsers").permitAll()
+//                        .anyRequest().authenticated()
+//                        )
 //                .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
+////                .formLogin(from -> from
+////                        .loginPage("/api/users/login")
+////                        .permitAll()
+////                )
 //                .build();
 //    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        return http.csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/users/register").permitAll()
+                        .anyRequest().permitAll()
+                )
+                .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
+                .build();
+    }
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring().requestMatchers(new AntPathRequestMatcher("/h2-console/**"));

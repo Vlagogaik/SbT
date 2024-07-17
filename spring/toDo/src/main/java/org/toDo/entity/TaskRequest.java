@@ -10,5 +10,6 @@ public class TaskRequest {
     private String title;
     private String description;
     private LocalDate dueDate;
-    private Long user_id;
+    private String username;
+    private TaskStatus STATUS;
 }
