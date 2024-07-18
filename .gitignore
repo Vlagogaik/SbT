@@ -2,3 +2,7 @@
 .idea
 log/
 .mvn
+target/
+HELP.md
+mvnw
+mvnw.cmd
