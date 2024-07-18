@@ -20,6 +20,9 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @WebMvcTest(CartController.class)
 public class CartControllerTest {
 
+    private final long cartId = 1L;
+    private final long productId = 1L;
+    private final int quantity = 5;
     @Autowired
     private MockMvc mockMvc;
 
@@ -31,8 +34,6 @@ public class CartControllerTest {
 
     @Test
     public void testAddProductToCart() throws Exception {
-        long cartId = 1L;
-        long productId = 1L;
 
         Mockito.when(cartService.addProductToCart(Mockito.anyLong(), Mockito.anyLong())).thenReturn(cartId);
 
@@ -45,8 +46,6 @@ public class CartControllerTest {
 
     @Test
     public void testRemoveProductFromCart() throws Exception {
-        long cartId = 1L;
-        long productId = 1L;
 
         Mockito.when(cartService.removeProductFromCart(Mockito.anyLong(), Mockito.anyLong())).thenReturn(cartId);
 
@@ -59,9 +58,6 @@ public class CartControllerTest {
 
     @Test
     public void testUpdateProductQuantityInCart() throws Exception {
-        long cartId = 1L;
-        long productId = 1L;
-        int quantity = 5;
 
         Mockito.when(cartService.updateProductQuantityInCart(Mockito.anyLong(), Mockito.anyLong(), Mockito.anyInt())).thenReturn(cartId);
 
@@ -75,7 +71,6 @@ public class CartControllerTest {
 
     @Test
     public void testCheckout() throws Exception {
-        long cartId = 1L;
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/carts/{cartId}/checkout", cartId)
                         .contentType(MediaType.APPLICATION_JSON)
